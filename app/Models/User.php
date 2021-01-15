@@ -18,6 +18,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
   use HasFactory, SoftDeletes, Notifiable;
 
+
+  protected $dates = [
+    'created_at',
+    'updated_at',
+    'deleted_at',
+  ];
+
   /**
    * The attributes that are mass assignable.
    *
@@ -31,8 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
     'image',
     'last_login',
     'remember_token',
-    'email_verified_at',
-    'school_id'
+    'email_verified_at'
   ];
 
   /**
@@ -79,51 +85,11 @@ class User extends Authenticatable implements MustVerifyEmail
     return false;
   }
 
-  // checks whether user belongs to class
-  public function classMember($class_id = null)
-  {
-    if (!isset($class_id) || !isset($this->classes)) {
-      return false;
-    }
-
-    foreach ($this->classes as $key => $class) {
-      if ($class->id === $class_id) return true;
-    }
-
-    return false;
-  }
 
   public function getIsAdminAttribute()
   {
     return $this->roles()->where('name', 'admin')->exists();
   }
-
-  public function getIsSuperAdminAttribute()
-  {
-    return $this->roles()->where('name', 'super_admin')->exists();
-  }
-
-  public function getIsTeacherAttribute()
-  {
-    return $this->roles()->where('name', 'teacher')->exists();
-  }
-
-  public function getIsStudentAttribute()
-  {
-    return $this->roles()->where('name', 'student')->exists();
-  }
-
-  public function teacherLessons()
-  {
-    return $this->hasMany(Lesson::class, 'teacher_id');
-  }
-
-  public static function teachers()
-  {
-    $role = Role::with('users')->where('name', 'teacher')->orWhere('label', 'teacher')->first();
-    return $role->users ? $role->users : [];
-  }
-
   public function getEmailVerifiedAtAttribute($value)
   {
     return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
@@ -151,66 +117,18 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
   }
 
-  public function classes()
+  public function comments()
   {
-    return $this->belongsToMany(SchoolClass::class, 'user_classes', 'user_id', 'class_id');
+      return $this->hasMany(Comment::class, 'user_id');
   }
 
-  public function timetables()
+  public function medias()
   {
-    return $this->hasMany(Timetable::class, 'created_by');
+      return $this->hasMany(Media::class, 'user_id');
   }
 
-  public function schools()
+  public function folders()
   {
-    return $this->belongsToMany(School::class, 'user_schools', 'user_id', 'school_id');
+      return $this->hasMany(Comment::class, 'user_id');
   }
-
-  public function activeSchool()
-  {
-    return $this->belongsTo(School::class, 'school_id');
-  }
-
-  public function school()
-  {
-    return $this->belongsTo(School::class, 'school_id');
-  }
-
-  public function currentSchool()
-  {
-    return $this->activeSchool ? $this->activeSchool : null;
-  }
-
-  public function setSchoolIdAttribute($value)
-  {
-    if ($value) {
-      $this->attributes['school_id'] = $value;
-    }
-  }
-
-  public function isActiveSchool($id = null)
-  {
-    if (!$id) return false;
-
-    return $this->school_id == $id;
-  }
-
-  public function timetable_subscriptions()
-  {
-      return $this->hasMany(UserTimetableSubscription::class , 'user_id');
-  }
-
-  public function subscribedToLesson($id /** lesson id */)
-  {
-    if(Auth::check()) return false;
-    if($this->timetable_subscriptions->where('lesson_id', $id)) {
-      return true;
-    }
-    return false;
-  }
-
-  // public function getNotificationsAttribute()
-  // {
-  //   return $this->notifications() ? $this->notifications() : [];
-  // }
 }
