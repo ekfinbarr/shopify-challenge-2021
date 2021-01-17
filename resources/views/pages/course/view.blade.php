@@ -18,7 +18,7 @@ View Lesson
       </h4>
     </div>
 
-    @if (Auth::user()->hasRole(['admin', 'super_admin']))
+    @if (Auth::user()->hasRole(['admin']))
     <div class="col-sm-4 col-xl-6 text-sm-right">
       <div class="btn-group ml-2 d-none d-sm-inline-block">
         <a href="{{ route('lessons.edit', $lesson) }}" type="button" class="btn btn-soft-primary btn-sm"><i

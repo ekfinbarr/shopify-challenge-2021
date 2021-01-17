@@ -18,7 +18,7 @@ View Timetable
       </h4>
     </div>
 
-    @if (Auth::user()->hasRole(['admin', 'super_admin']))
+    @if (Auth::user()->hasRole(['admin']))
     <div class="col-sm-4 col-xl-6 text-sm-right">
       <div class="btn-group ml-2 d-none d-sm-inline-block">
         <a href="{{ route('schools.edit', $school) }}" type="button" class="btn btn-soft-primary btn-sm"><i
@@ -71,7 +71,7 @@ View Timetable
                 </div>
               </div>
             </div>
-            @if (Auth::user()->hasRole(['admin', 'super_admin']))
+            @if (Auth::user()->hasRole(['admin']))
             <div class="col-xl-3 col-sm-6">
               <!-- stat 2 -->
               <div class="media p-3">

@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\User;
-use App\Notifications\VerificationComplete;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -20,68 +18,7 @@ use Illuminate\Support\Facades\Session;
 
 
 
-Auth::routes(['verify' => true]);
-
-Route::get('email/verify', [App\Http\Controllers\Auth\VerificationController::class, 'show'])->name('verification.notice');
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-
-// Route::group(['middleware' => 'auth'], function () {
-
-// Route::get('/index', function () {
-//   return view('pages.index');
-// });
-
-// Route::get('/', function () {
-//   return view('pages.index');
-// })->name('dashboard');
-
-// Route::get('/timetables', function () {
-//   return view('pages.timetable.index');
-// })->name('timetables');
-
-// Route::get('/timetables/{id}', function () {
-//   return view('pages.timetable.view');
-// })->name('view-timetable');
-
-// Route::get('/lessons', function () {
-//   return view('pages.lesson.index');
-// })->name('lessons');
-
-Route::get('testemail', function () {
-  Mail::to(['tom@myspace.com'])->send(new Hello);
-});
-Route::get('/markAsRead', function () {
-
-  auth()->user()->unreadNotifications->markAsRead();
-
-  return redirect()->back();
-})->name('mark');
-
-Route::get('/notify', function () {
-
-  $user = Auth::user();
-
-  $details = [
-    'greeting' => 'Hi ' . $user->name . ',',
-    'body' => 'This is our example notification tutorial',
-    'thanks' => 'Thank you for visiting ' . config('app.name') . ' !',
-  ];
-
-  try {
-    $user->notify(new VerificationComplete($details));
-
-    Session::flash('success', 'Notification successful!');
-    return redirect()->back();
-  } catch (\Throwable $th) {
-    
-    Session::flash('error', $th->getMessage());
-    return redirect()->back();
-  }
-  return dd("Done");
-});
+Auth::routes(/*['verify' => true]*/);
 
 Route::get('verify', function () {
   return view('auth.verify');
@@ -91,27 +28,28 @@ Route::get('verify', function () {
 // Dashboard
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/about', [App\Http\Controllers\HomeController::class, 'showAboutPage'])->name('about');
+Route::get('/contact', [App\Http\Controllers\HomeController::class, 'showContactPage'])->name('contact');
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
 
-// Timetable
-Route::resource('timetables', App\Http\Controllers\TimetableController::class);
+// Media
+Route::resource('media', App\Http\Controllers\MediaController::class);
 
-// School
-Route::resource('schools', App\Http\Controllers\SchoolController::class);
-Route::get('/activate_school/{id}', [App\Http\Controllers\SchoolController::class, 'setActiveSchool'])->name('activate_school');
+// Category
+Route::resource('categories', App\Http\Controllers\CategoryController::class);
 
-// Class
-Route::resource('classes', App\Http\Controllers\SchoolClassController::class);
+// Tag
+Route::resource('tags', App\Http\Controllers\TagController::class);
 
-// Lesson
-Route::resource('lessons', App\Http\Controllers\LessonController::class);
+// Media Format
+Route::resource('media_formats', App\Http\Controllers\MediaFormatController::class);
 
-// Course
-Route::resource('courses', App\Http\Controllers\CourseController::class);
+// Folders
+Route::resource('folders', App\Http\Controllers\FolderController::class);
 
-// Subscription
-Route::resource('subscriptions', App\Http\Controllers\UserTimetableSubscriptionController::class);
+// Media Type
+Route::resource('media_types', App\Http\Controllers\MediaTypeController::class);
 
 // Roles
 Route::resource('roles', App\Http\Controllers\RoleController::class);

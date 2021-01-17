@@ -60,7 +60,7 @@ My Dashboard
 
 
   <div class="row">
-    @if (Auth::user()->hasRole(['admin', 'super_admin']))
+    @if (Auth::user()->hasRole(['admin']))
       <div class="col-md-6 col-xl-3 col-sm-6">
         <div class="card">
             <div class="card-body p-0">
@@ -104,7 +104,7 @@ My Dashboard
                         <span class="text-muted text-uppercase font-size-12 font-weight-bold">
                           Timetables
                         </span>
-                        <h2 class="mb-0">{{ Auth::user()->hasRole(['admin','super_admin']) ? count(App\Models\Timetable::where('school_id', Auth::user()->school_id)->orWhere('created_by', Auth::user()->id)->get()) : count(App\Models\Timetable::where('school_id', Auth::user()->school_id)->get()) }}</h2>
+                        <h2 class="mb-0">{{ Auth::user()->hasRole(['admin']) ? count(App\Models\Timetable::where('school_id', Auth::user()->school_id)->orWhere('created_by', Auth::user()->id)->get()) : count(App\Models\Timetable::where('school_id', Auth::user()->school_id)->get()) }}</h2>
                     </div>
                 </div>
             </div>

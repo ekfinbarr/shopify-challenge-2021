@@ -14,7 +14,7 @@
     <div class="col-md-3 col-xl-6">
       <h4 class="mb-1 mt-0">@yield('title')</h4>
     </div>
-    @if (Auth::check() && Auth::user()->hasRole(['admin', 'super_admin']))
+    @if (Auth::check() && Auth::user()->hasRole(['admin']))
     <div class="col-md-9 col-xl-6 text-md-right">
       <div class="mt-4 mt-md-0">
         <a href="{{ route('courses.create') }}" type="button" class="btn btn-danger mr-4 mb-3  mb-sm-0">
@@ -78,7 +78,7 @@
                       <a class="dropdown-item"
                         href="{{ $course->timetable ? route('timetables.show', $course->timetable) : '#' }}">View
                         Timetable</a>
-                      @if (Auth::check() && Auth::user()->hasRole(['admin', 'super_admin']))
+                      @if (Auth::check() && Auth::user()->hasRole(['admin']))
                       <a class="dropdown-item" href="{{ route('courses.edit', $course) }}">Edit</a>
                       <a class="dropdown-item" href="{{ route('courses.destroy', $course) }}">Delete</a>
                       @endif

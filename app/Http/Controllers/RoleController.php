@@ -41,7 +41,7 @@ class RoleController extends Controller
    */
   public function create()
   {
-    if (!Auth::check() && !Auth::user()->hasRole(['super_admin', 'admin'])) {
+    if (!Auth::check() && !Auth::user()->hasRole(['admin'])) {
       return redirect()->back();
     }
 
@@ -60,7 +60,7 @@ class RoleController extends Controller
    */
   public function store(Request $request)
   {
-    if (!Auth::check() && !Auth::user()->hasRole(['super_admin', 'admin'])) {
+    if (!Auth::check() && !Auth::user()->hasRole(['admin'])) {
       return redirect()->back();
     }
 
@@ -100,7 +100,7 @@ class RoleController extends Controller
    */
   public function show($id)
   {
-    if (!Auth::check() && !Auth::user()->hasRole(['super_admin', 'admin'])) {
+    if (!Auth::check() && !Auth::user()->hasRole(['admin'])) {
       return redirect()->back();
     }
 
@@ -123,7 +123,7 @@ class RoleController extends Controller
    */
   public function edit(Role $role)
   {
-    if (!Auth::check() && !Auth::user()->hasRole(['super_admin', 'admin'])) {
+    if (!Auth::check() && !Auth::user()->hasRole(['admin'])) {
       return redirect()->back();
     }
 
@@ -144,7 +144,7 @@ class RoleController extends Controller
    */
   public function update(Request $request, Role $role)
   {
-    if (!Auth::check() && !Auth::user()->hasRole(['super_admin', 'admin'])) {
+    if (!Auth::check() && !Auth::user()->hasRole(['admin'])) {
       return redirect()->back();
     }
 
@@ -185,7 +185,7 @@ class RoleController extends Controller
    */
   public function destroy(Role $role)
   {
-    if (!Auth::check() && !Auth::user()->hasRole(['super_admin', 'admin'])) {
+    if (!Auth::check() && !Auth::user()->hasRole(['admin'])) {
       return redirect()->back();
     }
 
@@ -212,7 +212,7 @@ class RoleController extends Controller
    */
   public function assignUserRole(Request $request, User $user)
   {
-    if (!Auth::check() && !Auth::user()->hasRole(['super_admin', 'admin'])) {
+    if (!Auth::check() && !Auth::user()->hasRole(['admin'])) {
       return redirect()->back();
     }
 
@@ -244,7 +244,7 @@ class RoleController extends Controller
    */
   public function removeUserRole(Request $request)
   {
-    if (!Auth::check() && !Auth::user()->hasRole(['super_admin', 'admin'])) {
+    if (!Auth::check() && !Auth::user()->hasRole(['admin'])) {
       return redirect()->back();
     }
 
@@ -269,7 +269,7 @@ class RoleController extends Controller
    */
   public function assignRolePermission(Request $request)
   {
-    if (!Auth::check() && !Auth::user()->hasRole(['super_admin', 'admin'])) {
+    if (!Auth::check() && !Auth::user()->hasRole(['admin'])) {
       return redirect()->back();
     }
 
@@ -303,7 +303,7 @@ class RoleController extends Controller
    */
   public function removeRolePermission(Request $request)
   {
-    if (!Auth::check() && !Auth::user()->hasRole(['super_admin', 'admin'])) {
+    if (!Auth::check() && !Auth::user()->hasRole(['admin'])) {
       return redirect()->back();
     }
 
@@ -311,8 +311,6 @@ class RoleController extends Controller
       'label' => 'required|string|min:3',
       'description' => 'string'
     ]);
-
-
 
     // redirect
     toast('success', 'Process successful!');
@@ -323,7 +321,7 @@ class RoleController extends Controller
 
   public function showPermissionsForm($id)
   {
-    if (!Auth::check() && !Auth::user()->hasRole(['super_admin', 'admin'])) {
+    if (!Auth::check() && !Auth::user()->hasRole(['admin'])) {
       toast('error', 'Unauthorized action!');
       return redirect()->back();
     }

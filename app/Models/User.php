@@ -35,7 +35,7 @@ class User extends Authenticatable implements MustVerifyEmail
     'email',
     'phone',
     'password',
-    'image',
+    'country',
     'last_login',
     'remember_token',
     'email_verified_at'
@@ -62,7 +62,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
 
-  // checks whether user has a role(s)
+  // check whether user has a role(s)
   public function hasRole($role_name)
   {
     if (!isset($role_name) || !isset($this->roles)) {
@@ -90,9 +90,15 @@ class User extends Authenticatable implements MustVerifyEmail
   {
     return $this->roles()->where('name', 'admin')->exists();
   }
+
   public function getEmailVerifiedAtAttribute($value)
   {
     return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
+  }
+
+  public function updateLogin()
+  {
+    $this->last_login_at = Carbon::now();
   }
 
   public function setEmailVerifiedAtAttribute($value)
@@ -119,16 +125,22 @@ class User extends Authenticatable implements MustVerifyEmail
 
   public function comments()
   {
-      return $this->hasMany(Comment::class, 'user_id');
+    return $this->hasMany(Comment::class, 'user_id');
   }
 
-  public function medias()
+  public function media()
   {
-      return $this->hasMany(Media::class, 'user_id');
+    return $this->hasMany(Media::class, 'user_id');
   }
 
   public function folders()
   {
-      return $this->hasMany(Comment::class, 'user_id');
+    return $this->hasMany(Comment::class, 'user_id');
+  }
+
+  public function hasMedia($id)
+  {
+    if (!isset($id)) return false;
+    return Media::where([['id', $id], ['user_id', $this->id]])->first() ? true : false;
   }
 }

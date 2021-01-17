@@ -15,7 +15,10 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->longText('message')->nullable();
+            $table->boolean('published')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

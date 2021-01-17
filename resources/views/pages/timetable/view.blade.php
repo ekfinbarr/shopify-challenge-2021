@@ -36,7 +36,7 @@ View Timetable
       </h4>
     </div>
 
-    @if ($timetable->created_by == Auth::user()->id || Auth::user()->hasRole(['admin', 'super_admin']))
+    @if ($timetable->created_by == Auth::user()->id || Auth::user()->hasRole(['admin']))
         <div class="col-sm-4 col-xl-4 text-sm-right">
           <div class="btn-group ml-2 d-none d-sm-inline-block">
             <a href="{{ route('timetables.edit', $timetable) }}" type="button" class="btn btn-soft-primary btn-sm"><i
@@ -538,7 +538,7 @@ View Timetable
               })(jQuery);
               </script>
 
-              @if (isset($classes) && Auth::user()->hasRole(['admin', 'super_admin']))
+              @if (isset($classes) && Auth::user()->hasRole(['admin']))
               <div class="col-12">
                 <div class="form-group">
                   <label class="control-label">Class</label>
@@ -558,7 +558,7 @@ View Timetable
                   <label class="control-label">Type </label>
                   <select class="form-control custom-select" value="{{ old('is_private') }}" name="is_private" id="privacy" required>
                     <option value="true" selected>Private</option>
-                    @if(Auth::user()->hasRole(['admin', 'super_admin']))
+                    @if(Auth::user()->hasRole(['admin']))
                       <option value="false">Public</option>
                     @endif
                   </select>

@@ -64,11 +64,11 @@
   <div id="wrapper">
 
     <!-- Topbar Start -->
-    @include('partials._navbar')
+    @include('partials.dashboard._navbar')
     <!-- end Topbar -->
 
     <!-- ========== Left Sidebar Start ========== -->
-    @include('partials._sidebar')
+    @include('partials.dashboard._sidebar')
     <!-- Left Sidebar End -->
 
     <!-- ============================================================== -->
@@ -135,7 +135,7 @@
 
 
       <!-- Footer Start -->
-      @include('partials._footer')
+      @include('partials.dashboard._footer')
       <!-- end Footer -->
 
     </div>

@@ -26,7 +26,7 @@ class CreatePermissionsTable extends Migration
     });
 
     // predefined permissions
-    $permissions = ['user_management_access', 'permission_create', 'permission_edit', 'permission_show', 'permission_delete', 'permission_access', 'role_create', 'role_edit', 'role_show', 'role_delete', 'role_access', 'user_create', 'user_edit', 'user_show', 'user_delete', 'user_access', 'lesson_create', 'lesson_edit', 'lesson_show', 'lesson_delete', 'lesson_access', 'school_class_create', 'school_class_edit', 'school_class_show', 'school_class_delete', 'school_class_access'];
+    $permissions = ['user_management_access', 'permission_create', 'permission_edit', 'permission_show', 'permission_delete', 'permission_access', 'role_create', 'role_edit', 'role_show', 'role_delete', 'role_access', 'user_create', 'user_edit', 'user_show', 'user_delete', 'user_access', 'media_create', 'media_edit', 'media_show', 'media_delete', 'media_access', 'media_sale'];
     $faker = Faker::create();
     for ($i = 0; $i < count($permissions); $i++) {
       DB::table('permissions')->insert([

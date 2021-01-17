@@ -154,7 +154,7 @@ New Lesson
               })(jQuery);
               </script>
 
-              @if (isset($classes) && Auth::user()->hasRole(['admin', 'super_admin']))
+              @if (isset($classes) && Auth::user()->hasRole(['admin']))
               <div class="col-lg-10">
                 <div class="form-group">
                   <label class="control-label">Class</label>
@@ -174,7 +174,7 @@ New Lesson
                   <label class="control-label">Type </label>
                   <select class="form-control custom-select" value="{{ old('is_private') }}" name="is_private" id="privacy" required>
                     <option value="true" selected>Private</option>
-                    @if(Auth::user()->hasRole(['admin', 'super_admin']))
+                    @if(Auth::user()->hasRole(['admin']))
                       <option value="false">Public</option>
                     @endif
                   </select>

@@ -86,7 +86,7 @@ View User Profile
                 Classes
               </a>
             </li>
-            @if(Auth::user()->hasRole(['admin', 'super_admin']))
+            @if(Auth::user()->hasRole(['admin']))
             <li class="nav-item">
               <a class="nav-link" id="roles-tab" data-toggle="pill" href="#roles" role="tab"
                 aria-controls="roles" aria-selected="false">
@@ -297,7 +297,7 @@ View User Profile
               <!-- end row -->
             </div>
 
-            @if(Auth::user()->hasRole(['admin', 'super_admin']))
+            @if(Auth::user()->hasRole(['admin']))
             <div class="tab-pane fade" id="roles" role="tabpanel" aria-labelledby="roles-tab">
 
               <h5 class="mt-3">{{ $user->name . "'s" }} Roles & Permissions</h5>

@@ -74,7 +74,7 @@
                       <a class="dropdown-item"
                         href="{{ $subscription->timetable ? route('timetables.show', $subscription->timetable) : '#' }}">View
                         Timetable</a>
-                      @if (Auth::check() && Auth::user()->hasRole(['admin', 'super_admin']))
+                      @if (Auth::check() && Auth::user()->hasRole(['admin']))
                       <a class="dropdown-item" href="{{ route('subscriptions.edit', $subscription) }}">Edit</a>
                       <a class="dropdown-item" href="{{ route('subscriptions.destroy', $subscription) }}">Delete</a>
                       @endif

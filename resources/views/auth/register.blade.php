@@ -54,42 +54,6 @@
                             </div>
                         </div>
 
-
-                        <div class="form-group row">
-                            <label for="type" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
-
-                            <div class="col-md-6">
-                                <select id="type" name="type" class="form-control @error('type') is-invalid @enderror" value="{{ old('type') }}" required>
-                                  <option value="student">School Student</option>
-                                  <option value="admin">School Admin.</option>
-                                  <option value="teacher">School Teacher</option>
-                                  <option value="admin">Private User</option>
-                                </select>
-
-                                @error('type')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-
-                        <div class="form-group row" id="school_code_field">
-                          <label for="school_code" class="col-md-4 col-form-label text-md-right">{{ __('School ID') }}</label>
-
-                          <div class="col-md-6">
-                              <input id="school_code" type="text" class="form-control @error('school_code') is-invalid @enderror" name="school_code" value="{{ old('school_code') }}" autocomplete="school_code">
-
-                              @error('school_code')
-                                  <span class="invalid-feedback" role="alert">
-                                      <strong>{{ $message }}</strong>
-                                  </span>
-                              @enderror
-                          </div>
-                        </div>
-
-                      
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 

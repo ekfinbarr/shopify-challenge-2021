@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
+// use App\Models\User;
+// use Illuminate\Support\Facades\Redirect;
+// use Illuminate\Support\Facades\Session;
+// use Illuminate\Support\Facades\Validator;
+// use Illuminate\Support\Str;
 
 class PermissionController extends Controller
 {

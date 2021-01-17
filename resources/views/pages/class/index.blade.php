@@ -68,7 +68,7 @@ All Classes
                       <a class="dropdown-item active"
                         href="{{ $class->timetable ? route('timetables.show', $class->timetable) : '#' }}">View
                         Timetable</a>
-                      @if (Auth::check() && Auth::user()->hasRole(['admin', 'super_admin']))
+                      @if (Auth::check() && Auth::user()->hasRole(['admin']))
                       <a class="dropdown-item active" href="{{ route('classes.destroy', $class) }}">Delete</a>
                       @endif
                     </div>

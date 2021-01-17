@@ -1,9 +1,9 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -27,12 +27,14 @@ class CreateRolesTable extends Migration
         });
 
         // predefined roles
-        $roles = ['admin', 'user', 'teacher', 'student', 'super admin'];
-        $faker = Faker::create();
+        $roles = ['admin', 'user'];
+        
         for ($i = 0; $i < count($roles); $i++) {
             DB::table('roles')->insert([
                 'name' => Str::slug($roles[$i]),
-                'label' => $roles[$i]
+                'label' => $roles[$i],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
         }
     }

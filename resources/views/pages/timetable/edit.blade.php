@@ -45,7 +45,7 @@ Edit Timetables
               </div>
 
 
-              @if (Auth::user()->hasRole(['admin', 'super_admin']))
+              @if (Auth::user()->hasRole(['admin']))
               <div class="form-group col-lg-6">
                 <label for="sw-dots-first-name">School</label>
                 <select name="school_id" class="custom-select custom-select-lg mb-2">
@@ -70,7 +70,7 @@ Edit Timetables
                 <label for="sw-dots-last-name">Type</label>
                 <select name="is_private"  value="{{ $timetable->is_private }}" class="custom-select custom-select-lg mb-2" required>
                   <option disabled>-- Select timetable type --</option>
-                  @if (Auth::user()->hasRole(['admin', 'super_admin']))
+                  @if (Auth::user()->hasRole(['admin']))
                     <option value="false">Public timetable</option>
                   @endif
                   <option value="true">Private timetable</option>

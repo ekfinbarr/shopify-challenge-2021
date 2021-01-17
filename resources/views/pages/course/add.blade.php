@@ -76,7 +76,7 @@ New Course
               </div>
 
               
-              @if (isset($classes) && Auth::user()->hasRole(['admin', 'super_admin']))
+              @if (isset($classes) && Auth::user()->hasRole(['admin']))
 
               <div class="form-group col-lg-10">
                 <label for="sw-dots-first-name">Teacher</label>
@@ -107,7 +107,7 @@ New Course
                   <label class="control-label">Type </label>
                   <select class="form-control custom-select" value="{{ old('is_private') }}" name="is_private" id="privacy" required>
                     <option value="true" selected>Private</option>
-                    @if(Auth::user()->hasRole(['admin', 'super_admin']))
+                    @if(Auth::user()->hasRole(['admin']))
                       <option value="false">Public</option>
                     @endif
                   </select>

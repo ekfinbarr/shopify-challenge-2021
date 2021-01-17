@@ -3,19 +3,17 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\Verification;
 use App\Models\Role;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use App\Notifications\VerificationComplete;
-use App\Rules\isSchoolExist;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Mail;
+// use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -72,10 +70,9 @@ class RegisterController extends Controller
     return Validator::make($data, [
       'name' => ['required', 'string', 'max:255'],
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-      'phone' => ['required', 'string', 'unique:users', 'max:15'],
+      'phone' => ['nullable', 'string', 'unique:users', 'max:15'],
+      // 'country' => ['nullable', 'string', 'min:2'],
       'password' => ['required', 'string', 'min:8', 'confirmed'],
-      'type' => ['required', 'string', 'min:3'],
-      'school_code' => ['nullable', 'string', new isSchoolExist()]
     ]);
   }
 
@@ -90,8 +87,9 @@ class RegisterController extends Controller
     return User::create([
       'name' => $data['name'],
       'email' => $data['email'],
-      'school_id' => $data['school_code'],
+      'country' => isset($data['country'])?$data['country']:'Nigeria',
       'phone' => $data['phone'],
+      'last_login_at' => Carbon::now(),
       'password' => Hash::make($data['password']),
     ]);
   }
@@ -119,10 +117,6 @@ class RegisterController extends Controller
 
     session()->flash('success', '<b>Hi ' . $user->name . '!</b> Thanks for signing up!');
 
-    // Mail::to($user)->send(new Verification($user));
-
-    // return redirect()->to('/games');
-
     if ($response = $this->registered($request, $user)) {
       return $response;
     }
@@ -130,20 +124,5 @@ class RegisterController extends Controller
     return $request->wantsJson()
       ? new JsonResponse([], 201)
       : redirect($this->redirectPath());
-  }
-
-  public function verifyCompleteNotification()
-  {
-    $user = User::find(1);
-
-    $details = [
-      'greeting' => 'Hi ' . $user->name,
-      'body' => 'Your account has been created. Kindly check your mail to complete process.',
-      'thanks' => 'Thank you for visiting ' . config('app.name') . ' !',
-    ];
-
-    $user->notify(new VerificationComplete($details));
-
-    return dd("Done");
   }
 }
