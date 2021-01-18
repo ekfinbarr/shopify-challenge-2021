@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>{{ config('app.name', 'Timetable') }} - @yield('title')</title>
+  <title>{{ config('app.name') }} - @yield('title')</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
   <meta content="Coderthemes" name="author" />
@@ -15,12 +15,6 @@
 
   <!-- plugins -->
   <link href="{{ asset('assets/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
-  <link href="{{ asset('assets/libs/fullcalendar-core/main.min.css') }}" rel="stylesheet" type="text/css" />
-  <link href="{{ asset('assets/libs/fullcalendar-daygrid/main.min.css') }}" rel="stylesheet" type="text/css" />
-  <link href="{{ asset('assets/libs/fullcalendar-bootstrap/main.min.css') }}" rel="stylesheet" type="text/css" />
-  <link href="{{ asset('assets/libs/fullcalendar-timegrid/main.min.css') }}" rel="stylesheet" type="text/css" />
-  <link href="{{ asset('assets/libs/fullcalendar-list/main.min.css') }}" rel="stylesheet" type="text/css" />
-
 
   <!-- plugin css -->
   <link href="{{ asset('assets/libs/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
@@ -146,87 +140,6 @@
 
 
 
-    <!-- View Lesson MODAL -->
-    <div class="modal fade" id="view_lesson_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modal_lesson_header">Lesson Title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            {{-- <h5 class="header-title mb-3 mt-0">Nav Tabs</h5> --}}
-
-            <ul class="nav nav-tabs">
-              <li class="nav-item">
-                <a href="#lesson" data-toggle="tab" aria-expanded="false" class="nav-link active">
-                  <span class="d-block d-sm-none"><i class="uil-home-alt"></i></span>
-                  <span class="d-none d-sm-block">Lesson</span>
-                </a>
-              </li>
-            </ul>
-
-            <div class="tab-content p-3 text-muted">
-              <div class="tab-pane active" id="lesson">
-                {{--
-                    <div class="badge badge-success float-right">Completed</div>
-                    <p class="text-success text-uppercase font-size-12 mb-2">Web Design</p>
-                    --}}
-                <h5>
-                  <a href="#" id="modal_lesson_title" class="text-dark"></a>
-                </h5>
-
-                <p id="modal_lesson_description" class="text-muted mb-4"></p>
-
-                <div class="row">
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mt-4">
-                      <p class="mb-2"><i class="uil-calender text-danger"></i> Weekday</p>
-                      <h5 class="font-size-16" id="modal_lesson_weekday"></h5>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mt-4">
-                      <p class="mb-2"><i class="uil-clock text-danger"></i> Starting</p>
-                      <h5 class="font-size-16" id="modal_lesson_start_time"></h5>
-                    </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mt-4">
-                      <p class="mb-2"><i class="uil-clock text-danger"></i> Ending</p>
-                      <h5 class="font-size-16" id="modal_lesson_end_time"></h5>
-                    </div>
-                  </div>
-
-                  <div class="col-lg-3 col-md-6">
-                    <div class="mt-4">
-                      <p class="mb-2"><i class="uil-user text-danger"></i> Teacher</p>
-                      <h5 class="font-size-16" id="modal_lesson_teacher"></h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <form action="{{ route('subscriptions.store') }}" method="post">
-              @csrf
-              @method('POST')
-              <input type="hidden" id="modal_lesson_id_field" name="lesson_id" required>
-              <input type="hidden" id="modal_timetable_id_field" name="timetable_id" required>
-              <button type="submit" class="btn btn-success"> <i class="uil-bell p-1"></i> Notifications</button>
-            </form>
-            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="uil-times"></i> Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
   </div>
   <!-- END wrapper -->
 
@@ -240,14 +153,6 @@
 
   <!-- optional plugins -->
   <script src="{{ asset('assets/libs/moment/moment.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/fullcalendar-core/main.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/fullcalendar-bootstrap/main.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/fullcalendar-daygrid/main.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/fullcalendar-timegrid/main.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/fullcalendar-list/main.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/fullcalendar-interaction/main.min.js') }}"></script>
-  {{-- <script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
-  <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script> --}}
 
   <!-- page js -->
   <script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>

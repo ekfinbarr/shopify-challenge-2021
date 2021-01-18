@@ -13,15 +13,34 @@
         <li class="nav-item">
           <a class="nav-link nav-link-1 active" aria-current="page" href="{{ route('media.index') }}">Photos</a>
         </li>
+        {{-- <li class="nav-item">
+          <a class="nav-link nav-link-2" href="videos.html">Videos</a>
+        </li> --}}
         <li class="nav-item">
-          {{-- <a class="nav-link nav-link-2" href="videos.html">Videos</a> --}}
+          <a class="nav-link nav-link-1" href="{{ route('about') }}">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link nav-link-3" href="{{ route('about') }}">About</a>
+          <a class="nav-link nav-link-1" href="{{ route('contact') }}">Contact</a>
+        </li>
+        @if (Auth::check())
+        <li class="nav-item">
+          <a class="nav-link nav-link-1" href="{{ route('dashboard', ["path" => "dashboard"]) }}">{{ trans('Dashboard') }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link nav-link-4" href="{{ route('contact') }}">Contact</a>
+          <a class="nav-link nav-link-1" href="{{ route('logout') }}" onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();">
+            {{ __('Logout') }}
+          </a>
+
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+          </form>
         </li>
+        @else
+        <li class="nav-item">
+          <a class="nav-link nav-link-1" href="{{ route('login') }}">Login</a>
+        </li>
+        @endif
       </ul>
     </div>
   </div>

@@ -29,10 +29,9 @@ class HomeController extends Controller
    */
   public function index(Request $request)
   {
-    if (isset($request->route) && ($request->route == 'dashboard' || $request->route == 'admin')) {
-      $this->showDashboard();
+    if (isset($request->path) && $request->path == 'dashboard') {
+      return $this->showDashboard();
     } else {
-      // return $this->getLandingResource(isset($request->search) ? $request->search : '')['photos'];
       return view('landing.index')
         ->with("categories", $this->getLandingResource()['categories'])
         ->with("tags", $this->getLandingResource()['tags'])
@@ -59,15 +58,15 @@ class HomeController extends Controller
   public function showDashboard()
   {
     if (Auth::check()) {
-      if (Auth::user()->hasRole('admin')) {
+      if (!Auth::user()->hasRole('admin')) {
         $dashboard_info = $this->getUserDashboardInfo();
         return view('pages.index')->with('dashboard', $dashboard_info);
-      } else if (Auth::user()->hasRole('user')) {
+      } else if (!Auth::user()->hasRole('user')) {
         $dashboard_info = $this->getUserDashboardInfo();
         return view('pages.index')->with('dashboard', $dashboard_info);
       } else {
         toast('error', 'Unauthorized access! please contact the admin if challenge persist');
-        $this->index(new Request(['route' => 'landing']));
+        return redirect()->route("home"); // $this->index(new Request(['route' => 'landing']));
       }
     } else {
       toast('error', 'Please login to continue!');
@@ -79,9 +78,10 @@ class HomeController extends Controller
   {
     $categories = Category::all();
     $tags = Tag::all();
-    $media = Media::public()->orderBy("updated_at", "desc")->paginate(16);
+    $media = Media::public()->published()->orderBy("updated_at", "desc")->paginate(16);
     if ($search !== "") {
       $media = Media::public()
+        ->published()
         ->where('name', 'LIKE', '%' . $search . '%')
         ->orWhere('description', 'LIKE', '%' . $search . '%')
         ->orderBy("updated_at", "desc")

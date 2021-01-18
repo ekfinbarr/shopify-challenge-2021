@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+// use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
+// use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +20,9 @@ use Illuminate\Support\Facades\Session;
 
 Auth::routes(/*['verify' => true]*/);
 
-Route::get('verify', function () {
-  return view('auth.verify');
-});
+// Route::get('verify', function () {
+//   return view('auth.verify');
+// });
 
 
 // Dashboard

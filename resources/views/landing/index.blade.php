@@ -33,7 +33,7 @@
     @foreach ($photos as $index => $photo)
       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
         <figure class="effect-ming tm-video-item">
-            <img src="{{ asset('img/img-'.($index+1).'.jpg') }}" alt="Image" class="img-fluid">
+            <img src="{{ $photo->file ? $photo->file : '' }}" alt="{{ $photo->name }}" class="img-fluid">
             <figcaption class="d-flex align-items-center justify-content-center">
                 <h2>{{ Str::limit($photo->name, 10, '...') }}</h2>
                 <a href="{{ route('media.show', $photo) }}">View more</a>

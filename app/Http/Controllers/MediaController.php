@@ -6,12 +6,19 @@ use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\AccessType;
+use App\Models\Category;
+use App\Models\MediaFormat;
+use App\Models\MediaType;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Traits\FileUploadTrait;
 
 class MediaController extends Controller
 {
+  use FileUploadTrait;
   /**
    * Display a listing of the resource.
    *
@@ -20,9 +27,19 @@ class MediaController extends Controller
   public function index(Request $request)
   {
     if (Auth::check()) {
-      $photos = Media::with(['user', 'category', 'tags'])->orderBy('created_at', 'desc')->paginate(10);
-      return view('pages.media.index')
-        ->with('photos', $photos);
+      $photos = Media::with(['user', 'category', 'tags'])
+        ->where('user_id', Auth::user()->id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+      if ($request->search !== "") {
+        $photos = Media::with(['user', 'category', 'tags'])
+          ->where('user_id', Auth::user()->id)
+          ->where('name', 'LIKE', '%' . $request->search . '%')
+          ->orWhere('description', 'LIKE', '%' . $request->search . '%')
+          ->orderBy("updated_at", "desc")
+          ->get();
+      }
+      return view("pages.media.index")->with("photos", $photos);
     } else {
       return view('auth.login')->with('error', 'Authentication Failed!');
     }
@@ -38,8 +55,17 @@ class MediaController extends Controller
     if (!Auth::check()) {
       return redirect()->back();
     }
-
-    return view('pages.media.add');
+    $media_formats = MediaFormat::all();
+    $media_types = MediaType::all();
+    $categories = Category::all();
+    $access_types = AccessType::all();
+    $tags = Tag::all();
+    return view('pages.media.add')
+      ->with("categories", $categories)
+      ->with("media_formats", $media_formats)
+      ->with("media_types", $media_types)
+      ->with("access_types", $access_types)
+      ->with("tags", $tags);
   }
 
 
@@ -52,7 +78,7 @@ class MediaController extends Controller
    */
   public function store(Request $request)
   {
-    if (!Auth::check() || !Auth::user()->hasRole('admin')) {
+    if (!Auth::check()) {
       return redirect()->back();
     }
 
@@ -61,7 +87,8 @@ class MediaController extends Controller
 
     $validator = Validator::make($request->all(), [
       'label' => 'string|min:3',
-      'description' => 'string|nullable'
+      'description' => 'string|nullable',
+      'image' => 'required|image|file'
     ]);
 
     // validate inputs
@@ -72,18 +99,50 @@ class MediaController extends Controller
         ->withInput($request->all());
     } else {
       try {
+        // get dimensions
+        $data = getimagesize($request->image);
+        $width = $data[0];
+        $height = $data[1];
+        $type = $data[2];
+        $attr = $data[3];
 
         // store
-        $input['name'] = isset($input['label']) ? Str::slug(Str::lower($input['label'])) : '';
+        $input['file'] = $this->getBaseUrl() . $this->uploadFile($request->image, 'media-photos');
+        $input['published'] = $request->published == 'true' || true ? 1 : 0;
+        $input['dimension'] = $width . ',' . $height;
+        $input['slug'] = $input['file'];
+        $input['name'] = !isset($input['name']) || $input['name'] == '' ? date('Y') . "_" . $request->image->getClientOriginalName() : '';
+        $input['user_id'] = Auth::user()->id;
         $photo = Media::create($input);
 
         // redirect
-        toast('success', 'Process Successful!');
-        return redirect()->view('pages.media.index');
+        toast('success', 'Image Upload Successful!');
+        return $this->index(new Request(['search' => '']));
       } catch (\Throwable $th) {
         Session::flash('error', 'Process failed!');
         return back()->withErrors($th->getMessage());
       }
+    }
+  }
+
+
+  /**
+   * Format bytes to kb, mb, gb, tb
+   *
+   * @param  integer $size
+   * @param  integer $precision
+   * @return integer
+   */
+  public static function formatBytes($size, $precision = 2)
+  {
+    if ($size > 0) {
+      $size = (int) $size;
+      $base = log($size) / log(1024);
+      $suffixes = array(' bytes', ' KB', ' MB', ' GB', ' TB');
+
+      return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
+    } else {
+      return $size;
     }
   }
 
@@ -95,10 +154,10 @@ class MediaController extends Controller
    */
   public function show($id)
   {
-    $photo = Media::with(['user', 'category','tags'])->where('id', $id)->first();
-    
+    $photo = Media::with(['user', 'category', 'tags'])->where('id', $id)->first();
+
     if (isset($photo)) {
-      $related_photos = Media::where('category_id', $photo->category_id)->limit(8)->get();
+      $related_photos = Media::public()->published()->where([['id', '!=', $photo->id],['category_id', $photo->category_id]])->limit(8)->get();
 
       return view('landing.media.view')
         ->with('related_photos', $related_photos)
@@ -119,8 +178,18 @@ class MediaController extends Controller
   public function edit(Media $photo)
   {
     if (Auth::check() && Auth::user()->hasRole('admin')) {
+      $media_formats = MediaFormat::all();
+      $media_types = MediaType::all();
+      $categories = Category::all();
+      $access_types = AccessType::all();
+      $tags = Tag::all();
       return view('pages.media.edit')
-        ->with('photo', $photo);
+        ->with("categories", $categories)
+        ->with("media_formats", $media_formats)
+        ->with("media_types", $media_types)
+        ->with("access_types", $access_types)
+        ->with('photo', $photo)
+        ->with("tags", $tags);
     } else {
       return redirect()->back();
     }
@@ -172,11 +241,18 @@ class MediaController extends Controller
    */
   public function destroy(Media $photo)
   {
-    if (!Auth::check() || !Auth::user()->hasRole('admin')) return redirect()->back();
-    $photo->delete();
-
-    // redirect
-    Session::flash('success', 'Resource deleted!');
-    return redirect()->route('photos.index');
+    if (!Auth::check()) {
+      toast("error", "Authentication Error!");
+      return redirect()->back();
+    }
+    if (Auth::user()->hasMedia($photo->id)) {
+      $photo->delete();
+      // redirect
+      Session::flash('success', 'Resource deleted!');
+      return redirect()->route('media.index');
+    } else {
+      toast("error", "Unauthorized action!. You have no right over this resource");
+      return redirect()->back();
+    }
   }
 }

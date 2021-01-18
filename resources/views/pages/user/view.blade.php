@@ -77,13 +77,13 @@ View User Profile
             <li class="nav-item">
               <a class="nav-link active" id="pills-activity-tab" data-toggle="pill" href="#pills-activity" role="tab"
                 aria-controls="pills-activity" aria-selected="true">
-                Activity
+                Uploads
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" id="classes-tab" data-toggle="pill" href="#classes" role="tab"
                 aria-controls="classes" aria-selected="false">
-                Classes
+                Folders
               </a>
             </li>
             @if(Auth::user()->hasRole(['admin']))
@@ -100,167 +100,32 @@ View User Profile
             <div class="tab-pane fade show active" id="pills-activity" role="tabpanel"
               aria-labelledby="pills-activity-tab">
               
-              <h5 class="mt-3">This Week</h5>
-              <div class="left-timeline mt-3 mb-3 pl-4">
-                <ul class="list-unstyled events mb-0">
-                  <li class="event-list">
-                    <div class="pb-4">
-                      <div class="media">
-                        <div class="event-date text-center mr-4">
-                          <div class="bg-soft-primary p-1 rounded text-primary font-size-14">
-                            02 hours ago</div>
+              <h4 class="mb-3 mt-0 header-title">Cards</h4>
+                <div class="row bg-light p-3">
+                  @foreach (Auth::user()->photos as $p)
+                  <div class="col-xl-6">
+                    <div class="card">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-md-5">
+                                <img src="{{ $p->file }}" class="card-img" alt="...">
+                                </div>
+                                <div class="col-md-7">
+                                <div class="card-body">
+                                    <h5 class="card-title font-size-16">{{ $p->name }}</h5>
+                                    <p class="card-text text-muted">{{ $p->description }}</p>
+                                    <p class="card-text"><small class="text-muted">Last updated {{ $p->updated_at->diffForHumans() }}</small></p>
+                                    <div class="btn-group" role="group" aria-label="Button group">
+                                      <a href="{{ route('media.show', $p) }}" type="button" class="btn btn-primary btn-xs">view</a>
+                                      <a href="{{ route('media.destroy', $p) }}" type="button" class="btn btn-danger btn-xs">delete</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="media-body">
-                          <h6 class="font-size-15 mt-0 mb-1">Designing
-                            Shreyu Admin</h6>
-                          <p class="text-muted font-size-14">Shreyu Admin - A
-                            responsive admin and dashboard template</p>
-                        </div>
-                      </div>
                     </div>
-                  </li>
-                  <li class="event-list">
-                    <div class="pb-4">
-                      <div class="media">
-                        <div class="event-date text-center mr-4">
-                          <div class="bg-soft-primary p-1 rounded text-primary font-size-14">
-                            21 hours ago</div>
-                        </div>
-                        <div class="media-body">
-                          <h6 class="font-size-15 mt-0 mb-1">UX and UI for
-                            Ubold Admin</h6>
-                          <p class="text-muted font-size-14">Ubold Admin - A
-                            responsive admin and dashboard template</p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="event-list">
-                    <div class="pb-4">
-                      <div class="media">
-                        <div class="event-date text-center mr-4">
-                          <div class="bg-soft-primary p-1 rounded text-primary font-size-14">
-                            22 hours ago</div>
-                        </div>
-                        <div class="media-body">
-                          <h6 class="font-size-15 mt-0 mb-1">UX and UI for
-                            Hyper Admin</h6>
-                          <p class="text-muted font-size-14">Hyper Admin - A
-                            responsive admin and dashboard template</p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <h5 class="mt-4">Last Week</h5>
-              <div class="left-timeline mt-3 pl-4">
-                <ul class="list-unstyled events mb-0">
-                  <li class="event-list">
-                    <div class="pb-4">
-                      <div class="media">
-                        <div class="event-date text-center mr-4">
-                          <div class="bg-soft-primary p-1 rounded text-primary font-size-14">
-                            02 hours ago</div>
-                        </div>
-                        <div class="media-body">
-                          <h6 class="font-size-15 mt-0 mb-1">Designing
-                            Shreyu Admin</h6>
-                          <p class="text-muted font-size-14">Shreyu Admin - A
-                            responsive admin and dashboard template</p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="event-list">
-                    <div class="pb-4">
-                      <div class="media">
-                        <div class="event-date text-center mr-4">
-                          <div class="bg-soft-primary p-1 rounded text-primary font-size-14">
-                            21 hours ago</div>
-                        </div>
-                        <div class="media-body">
-                          <h6 class="font-size-15 mt-0 mb-1">UX and UI for
-                            Ubold Admin</h6>
-                          <p class="text-muted font-size-14">Ubold Admin - A
-                            responsive admin and dashboard template</p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="event-list">
-                    <div class="pb-4">
-                      <div class="media">
-                        <div class="event-date text-center mr-4">
-                          <div class="bg-soft-primary p-1 rounded text-primary font-size-14">
-                            22 hours ago</div>
-                        </div>
-                        <div class="media-body">
-                          <h6 class="font-size-15 mt-0 mb-1">UX and UI for
-                            Hyper Admin</h6>
-                          <p class="text-muted font-size-14">Hyper Admin - A
-                            responsive admin and dashboard template</p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <h5 class="mt-4">Last Month</h5>
-              <div class="left-timeline mt-3 pl-4">
-                <ul class="list-unstyled events mb-0">
-                  <li class="event-list">
-                    <div class="pb-4">
-                      <div class="media">
-                        <div class="event-date text-center mr-4">
-                          <div class="bg-soft-primary p-1 rounded text-primary font-size-14">
-                            02 hours ago</div>
-                        </div>
-                        <div class="media-body">
-                          <h6 class="font-size-15 mt-0 mb-1">Designing
-                            Shreyu Admin</h6>
-                          <p class="text-muted font-size-14">Shreyu Admin - A
-                            responsive admin and dashboard template</p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="event-list">
-                    <div class="pb-4">
-                      <div class="media">
-                        <div class="event-date text-center mr-4">
-                          <div class="bg-soft-primary p-1 rounded text-primary font-size-14">
-                            21 hours ago</div>
-                        </div>
-                        <div class="media-body">
-                          <h6 class="font-size-15 mt-0 mb-1">UX and UI for
-                            Ubold Admin</h6>
-                          <p class="text-muted font-size-14">Ubold Admin - A
-                            responsive admin and dashboard template</p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="event-list">
-                    <div class="pb-4">
-                      <div class="media">
-                        <div class="event-date text-center mr-4">
-                          <div class="bg-soft-primary p-1 rounded text-primary font-size-14">
-                            22 hours ago</div>
-                        </div>
-                        <div class="media-body">
-                          <h6 class="font-size-15 mt-0 mb-1">UX and UI for
-                            Hyper Admin</h6>
-                          <p class="text-muted font-size-14">Hyper Admin - A
-                            responsive admin and dashboard template</p>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+                    </div> 
+                  @endforeach
+                    <!-- end col -->
+                </div>
             </div>
 
 

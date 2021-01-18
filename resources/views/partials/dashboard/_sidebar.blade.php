@@ -25,16 +25,6 @@
           <span>{{ trans('Settings') }}</span>
         </a>
 
-        {{-- <a href="javascript:void(0);" class="dropdown-item notify-item">
-                  <i data-feather="help-circle" class="icon-dual icon-xs mr-2"></i>
-                  <span>Support</span>
-              </a> --}}
-
-        {{-- <a href="pages-lock-screen.html" class="dropdown-item notify-item">
-                  <i data-feather="lock" class="icon-dual icon-xs mr-2"></i>
-                  <span>Lock Screen</span>
-              </a> --}}
-
         <div class="dropdown-divider"></div>
 
         <a href="{{ route('logout') }}" class="dropdown-item notify-item" onclick="event.preventDefault();
@@ -55,28 +45,28 @@
         <li class="menu-title">{{ trans('Navigation') }}</li>
 
         <li>
-          <a href="{{ route('dashboard') }}">
+          <a href="{{ route('dashboard', ['path'=>'dashboard']) }}">
             <i data-feather="home"></i>
             {{-- <span class="badge badge-success float-right">1</span> --}}
             <span> {{ trans('Dashboard') }} </span>
           </a>
         </li>
 
-        @if (Auth::user()->hasRole(['admin']))
-        <li>
+        @if (Auth::check() /* && Auth::user()->hasRole(['admin','user']) */)
+        {{-- <li>
           <a href="{{ route('media.index') }}">
             <i data-feather="award"></i>
             <span> {{ trans('Earnings') }} </span>
           </a>
-        </li>
-        @endif
+        </li> --}}
 
         <li>
           <a href="{{ route('media.index') }}">
             <i data-feather="aperture"></i>
-            <span> {{ trans('Content Manager') }} </span>
+            <span> {{ trans('Media Manager') }} </span>
           </a>
         </li>
+        @endif
 
         @if (Auth::user()->hasRole(['admin']))
         <li>
@@ -118,26 +108,14 @@
         </li>
         @endif
 
-        @if (!Auth::user()->hasRole(['admin']))
+        {{-- @if (!Auth::user()->hasRole(['admin']))
         <li>
           <a href="{{ route('users.show', Auth::user()) }}" title="Manage Profile">
             <i data-feather="user"></i>
             <span> {{ trans('Profile') }} </span>
           </a>
         </li>
-        @endif
-
-        <li>
-          <a href="{{ route('notifications.index') }}">
-            <i data-feather="bell"></i>
-            @if (Auth::check() && Auth::user()->unreadNotifications())
-            <span class="badge badge-primary float-right">
-              {{ count(Auth::user()->notifications->where('read_at', '')) }}
-            </span>
-            @endif
-            <span> {{ trans('Notifications') }} </span>
-          </a>
-        </li>
+        @endif --}}
 
         {{-- <li>
                   <a href="javascript: void(0);">

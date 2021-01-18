@@ -133,6 +133,11 @@ class User extends Authenticatable implements MustVerifyEmail
     return $this->hasMany(Media::class, 'user_id');
   }
 
+  public function photos()
+  {
+      return $this->hasMany(Media::class, 'user_id');
+  }
+
   public function folders()
   {
     return $this->hasMany(Comment::class, 'user_id');
