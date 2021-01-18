@@ -4,11 +4,11 @@
     <a href="{{ route('home') }}" class="navbar-brand mr-0 mr-md-2 logo">
           <span class="logo-lg">
               {{-- <img src="assets/images/logo.png" alt="" height="24" /> --}}
-              <i data-feather="calendar"></i>
-              <span class="d-inline h5 ml-1 text-logo">{{ config('app.name', 'Timetable') }}</span>
+              <i data-feather="camera"></i>
+              <span class="d-inline h5 ml-1 text-logo">{{ config('app.name') }}</span>
           </span>
           <span class="logo-sm">
-              <img src="assets/images/logo.png" alt="" height="24">
+              <img src="{{ asset('assets/images/logo.png') }}" alt="" height="24">
           </span>
       </a>
 
@@ -24,12 +24,14 @@
       <ul class="navbar-nav flex-row ml-auto d-flex list-unstyled topnav-menu float-right mb-0">
           <li class="d-none d-sm-block">
               <div class="app-search">
-                  <form>
-                      <div class="input-group">
-                          <input type="text" class="form-control" placeholder="Search...">
-                          <span data-feather="search"></span>
-                      </div>
-                  </form>
+              <form action="{{ route("media.index") }}">
+                @csrf
+                @method("GET")
+                  <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Search...">
+                    <span data-feather="search"></span>
+                  </div>
+                </form>
               </div>
           </li>
 
@@ -48,58 +50,6 @@
           </li>
           @endif
 
-
-          <li class="dropdown notification-list" data-toggle="tooltip" data-placement="left"
-              title="{{ count(Auth::user()->notifications->where('read_at', '')) }} new unread notification(s)">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
-                  aria-expanded="false">
-                  <i data-feather="bell"></i>
-                  <span class="noti-icon-badge"></span>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right dropdown-lg">
-
-                  <!-- item-->
-                  <div class="dropdown-item noti-title border-bottom">
-                      <h5 class="m-0 font-size-16">
-                          <span class="float-right">
-                              <a href="#" class="text-dark">
-                                  <small>Clear All</small>
-                              </a>
-                          </span>Notification
-                      </h5>
-                  </div>
-
-                  <div class="slimscroll noti-scroll">
-
-                    {{-- {{ Auth::user()->notifications }} --}}
-
-                    @foreach (Auth::user()->unreadNotifications as $ni => $notification)
-                    @if ($ni < 4)
-                        <a href="javascript:void(0);" class="dropdown-item notify-item border-bottom">
-                          <div class="notify-icon bg-primary"><i class="uil uil-comment-message"></i> </div>
-                          <p class="notify-details">
-                            @foreach ($notification->data as $index => $item)
-                            @if ($index < 1)
-                                {{ Str::limit($item, 60, '...') }}
-                            @endif
-                            @endforeach
-                            <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
-                          </p>
-                        </a>
-                    @endif
-                    @endforeach
-                    
-                  </div>
-
-                  <!-- All-->
-                  <a href="{{ route('notifications.index') }}"
-                      class="dropdown-item text-center text-primary notify-item notify-all border-top">
-                      View all
-                      <i class="fi-arrow-right"></i>
-                  </a>
-
-              </div>
-          </li>
 
           <li class="dropdown notification-list align-self-center profile-dropdown">
               <a class="nav-link dropdown-toggle nav-user mr-0" data-toggle="dropdown" href="#" role="button"

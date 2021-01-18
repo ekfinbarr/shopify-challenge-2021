@@ -65,6 +65,11 @@ class Media extends Model
         return $this->hasMany(Comment::class, 'media_id');
     }
 
+    public function scopePublished($query)
+    {
+        return $query->where('published', 1);
+    }
+    
     public function scopePublic($query)
     {
         return $query->where('access_id', AccessType::where("name", "public")->first()->id);

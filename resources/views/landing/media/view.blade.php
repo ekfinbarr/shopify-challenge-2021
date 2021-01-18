@@ -24,7 +24,7 @@
   @if (isset($media))
      <div class="row tm-mb-90">            
       <div class="col-xl-8 col-lg-7 col-md-6 col-sm-12">
-          <img src="{{ asset('img/img-01-big.jpg') }}" alt="Image" class="img-fluid">
+          <img src="{{ $media->file }}" alt="Image" class="img-fluid">
       </div>
       <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
           <div class="tm-bg-gray tm-video-details">
@@ -50,14 +50,19 @@
                   <div class="mr-4 mb-2">
                       <span class="tm-text-gray-dark">Likes: </span><span class="tm-text-primary">{{ $media->likes }}</span>
                   </div>
+                  @if ($media->price > 0 )
                   <div class="mr-4 mb-2">
                       <span class="tm-text-gray-dark">Price: </span><span class="tm-text-primary">{{ '$'.$media->price }}</span>
                   </div>
+                  @endif
               </div>
-              <div class="mb-4">
+              @if ($media->price <= 0 )
+                <div class="mb-4">
                   <h3 class="tm-text-gray-dark mb-3">License</h3>
                   <p>Free for both personal and commercial use. No need to pay anything. No need to make any attribution.</p>
-              </div>
+                </div>  
+              @endif
+              
               @if (isset($media->tags))
                 <div>
                     <h3 class="tm-text-gray-dark mb-3">Tags</h3>
@@ -84,7 +89,7 @@
     @foreach ($related_photos as $index => $photo)
       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-5">
         <figure class="effect-ming tm-video-item">
-            <img src="{{ asset('img/img-'.($index+1).'.jpg') }}" alt="Image" class="img-fluid">
+            <img src="{{ $photo->file ? $photo->file : '' }}" alt="{{ $photo->name }}" class="img-fluid">
             <figcaption class="d-flex align-items-center justify-content-center">
                 <h2>{{ Str::limit($photo->name, 10, '...') }}</h2>
                 <a href="{{ route('media.show', $photo) }}">View more</a>
