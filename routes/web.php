@@ -34,6 +34,7 @@ Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])-
 
 
 // Media
+Route::get('delete-media/{id}', [App\Http\Controllers\MediaController::class, 'destroy'])->name('delete-media');
 Route::resource('media', App\Http\Controllers\MediaController::class);
 
 // Category

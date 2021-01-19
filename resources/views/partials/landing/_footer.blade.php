@@ -4,10 +4,7 @@
           <div class="col-lg-6 col-md-12 col-12 px-5 mb-5">
               <h3 class="tm-text-primary mb-4 tm-footer-title">About {{ Str::ucfirst(config('app.name')) }}</h3>
               <p>
-                Catalog-Z is free <a rel="sponsored" href="https://v5.getbootstrap.com/">Bootstrap 5</a> 
-                Alpha 2 HTML Template for video and photo websites. 
-                You can freely use this TemplateMo layout for a front-end 
-                integration with any kind of website.
+                {{config('app.name') }} is a Nigerian provider of stock photography, stock footage, stock music, and editing tools; it is headquartered in New York.
               </p>
           </div>
           <div class="col-lg-3 col-md-6 col-sm-6 col-12 px-5 mb-5">

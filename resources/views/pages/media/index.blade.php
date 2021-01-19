@@ -33,7 +33,7 @@
         <div class="card-body p-3">
 
           <div class="row bg-light p-3">
-            @foreach ($photos as $p)
+            @foreach (Auth::user()->photos as $p)
             <div class="col-xl-6">
               <div class="card">
                 <div class="row no-gutters align-items-center">
@@ -48,7 +48,7 @@
                           {{ $p->updated_at->diffForHumans() }}</small></p>
                       <div class="btn-group" role="group" aria-label="Button group">
                         <a href="{{ route('media.show', $p) }}" type="button" class="btn btn-primary btn-xs">view</a>
-                        <a href="{{ route('media.destroy', $p) }}" type="button" class="btn btn-danger btn-xs">delete</a>
+                        <a href="{{ route('delete-media', $p) }}" type="button" class="btn btn-danger btn-xs">delete</a>
                       </div>
                     </div>
                   </div>
@@ -57,6 +57,23 @@
             </div>
             @endforeach
             <!-- end col -->
+            @if (!count(Auth::user()->photos))
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="row no-gutters align-items-center">
+                  <div class="col-md-12">
+                    <div class="card-body">
+                      <h2 class="card-text text-title"><i data-feather="folder"></i></h2>
+                      <h5 class="card-title font-size-16">You currently do not have any photos</h5>
+                      <p class="card-text text-muted">
+                      Upload photos and you'll see them here.  
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            @endif
           </div>
 
         </div>

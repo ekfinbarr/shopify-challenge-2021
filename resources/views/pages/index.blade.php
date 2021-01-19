@@ -136,7 +136,7 @@ My Dashboard
                                     <p class="card-text"><small class="text-muted">Last updated {{ $p->updated_at->diffForHumans() }}</small></p>
                                     <div class="btn-group" role="group" aria-label="Button group">
                                       <a href="{{ route('media.show', $p) }}" type="button" class="btn btn-primary btn-xs">view</a>
-                                      <a href="{{ route('media.destroy', $p) }}" type="button" class="btn btn-danger btn-xs">delete</a>
+                                      <a href="{{ route('delete-media', $p) }}" type="button" class="btn btn-danger btn-xs">delete</a>
                                     </div>
                                 </div>
                             </div>
