@@ -122,32 +122,66 @@ My Dashboard
             <div class="card-body">
                 <h4 class="mb-3 mt-0 header-title">Cards</h4>
                 <div class="row bg-light p-3">
-                  @foreach (Auth::user()->photos as $p)
-                  <div class="col-xl-6">
-                    <div class="card">
+                  @foreach ($dashboard['photos'] as $index => $p)
+                  {{-- set limit to six --}}
+                    @if ($index < 6)
+                    <div class="col-xl-6">
+                      <div class="card">
                         <div class="row no-gutters align-items-center">
-                            <div class="col-md-5">
-                                <img src="{{ $p->file }}" class="card-img" alt="...">
-                                </div>
-                                <div class="col-md-7">
-                                <div class="card-body">
-                                    <h5 class="card-title font-size-16">{{ $p->name }}</h5>
-                                    <p class="card-text text-muted">{{ $p->description }}</p>
-                                    <p class="card-text"><small class="text-muted">Last updated {{ $p->updated_at->diffForHumans() }}</small></p>
-                                    <div class="btn-group" role="group" aria-label="Button group">
-                                      <a href="{{ route('media.show', $p) }}" type="button" class="btn btn-primary btn-xs">view</a>
-                                      <a href="{{ route('delete-media', $p) }}" type="button" class="btn btn-danger btn-xs">delete</a>
-                                    </div>
-                                </div>
+                          <div class="col-md-5">
+                            <img src="{{ $p->file }}" class="card-img pl-lg-3" alt="...">
+                          </div>
+                          <div class="col-md-7">
+                            <div class="card-body">
+                              <h5 class="card-title font-size-16">{{ Str::limit($p->name, 50, '...') }}</h5>
+                              <p class="card-text text-muted">{{ Str::limit($p->description, 120, '...') }}</p>
+                              <p class="card-text"><small class="text-muted">Last updated
+                                  {{ $p->updated_at->diffForHumans() }}</small></p>
+                              <div class="btn-group" role="group" aria-label="Button group">
+                                <a href="{{ route('media.show', $p) }}" type="button" class="btn btn-primary btn-xs">view</a>
+                                <a href="{{ route('delete-media', $p) }}" type="button" class="btn btn-danger btn-xs">delete</a>
+                              </div>
                             </div>
+                          </div>
                         </div>
+                      </div>
                     </div>
-                    </div> 
+                    @endif
                   @endforeach
+
+                  @if (!count(Auth::user()->photos))
+                    <div class="col-lg-12">
+                      <div class="card">
+                        <div class="row no-gutters align-items-center">
+                          <div class="col-md-12">
+                            <div class="card-body">
+                              <h2 class="card-text text-title"><i data-feather="folder"></i></h2>
+                              <h5 class="card-title font-size-16">You currently do not have any photos</h5>
+                              <p class="card-text text-muted">
+                              Upload photos and you'll see them here.  
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    @endif
                     <!-- end col -->
                 </div>
                 <!-- end row -->
-
+                
+                @if (count(Auth::user()->photos) > 6)
+                <div class="row mb-3 mt-5">
+                  <div class="col-12">
+                    <div class="text-center">
+                      <a href="{{ route('media.index') }}" class="btn btn-lg btn-primary">
+                        <i data-feather="loader" class="icon-dual icon-xs mr-2 text-white"></i>
+                        Show More 
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                @endif
             </div>
         </div>
         <!-- end card -->

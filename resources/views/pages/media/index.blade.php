@@ -33,7 +33,7 @@
         <div class="card-body p-3">
 
           <div class="row bg-light p-3">
-            @foreach (Auth::user()->photos as $p)
+            @foreach ($photos as $p)
             <div class="col-xl-6">
               <div class="card">
                 <div class="row no-gutters align-items-center">
@@ -57,7 +57,7 @@
             </div>
             @endforeach
             <!-- end col -->
-            @if (!count(Auth::user()->photos))
+            @if (!count($photos))
             <div class="col-lg-12">
               <div class="card">
                 <div class="row no-gutters align-items-center">

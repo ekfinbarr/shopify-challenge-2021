@@ -97,11 +97,19 @@ class HomeController extends Controller
 
   public function getUserDashboardInfo()
   {
-    return [];
+    $photos = Media::with(['user', 'category', 'tags'])
+        ->where('user_id', Auth::user()->id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+    return ['photos' => $photos];
   }
 
   public function getAdminDashboardInfo()
   {
-    return [];
+    $photos = Media::with(['user', 'category', 'tags'])
+        ->where('user_id', Auth::user()->id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+    return ['photos' => $photos];
   }
 }
