@@ -33,4 +33,9 @@ class Folder extends Model
     {
       return AccessType::where('id', $this->access_id)->first()->name;
     }
+
+    public function media()
+    {
+        return $this->hasMany(Media::class, 'folder_id');
+    }
 }

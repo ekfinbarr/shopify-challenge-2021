@@ -140,7 +140,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
   public function folders()
   {
-    return $this->hasMany(Comment::class, 'user_id');
+    return $this->hasMany(Folder::class, 'user_id');
   }
 
   public function hasMedia($id)

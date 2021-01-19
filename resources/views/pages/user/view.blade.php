@@ -81,7 +81,7 @@ View User Profile
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="classes-tab" data-toggle="pill" href="#classes" role="tab"
+              <a class="nav-link" id="classes-tab" data-toggle="pill" href="#folders" role="tab"
                 aria-controls="classes" aria-selected="false">
                 Folders
               </a>
@@ -102,54 +102,86 @@ View User Profile
               
               <h4 class="mb-3 mt-0 header-title">Cards</h4>
                 <div class="row bg-light p-3">
-                  @foreach (Auth::user()->photos as $p)
+                  @foreach (Auth::user()->photos as $index => $p)
+                  @if ($index < 6)
                   <div class="col-xl-6">
                     <div class="card">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col-md-5">
-                                <img src="{{ $p->file }}" class="card-img" alt="...">
-                                </div>
-                                <div class="col-md-7">
-                                <div class="card-body">
-                                    <h5 class="card-title font-size-16">{{ $p->name }}</h5>
-                                    <p class="card-text text-muted">{{ $p->description }}</p>
-                                    <p class="card-text"><small class="text-muted">Last updated {{ $p->updated_at->diffForHumans() }}</small></p>
-                                    <div class="btn-group" role="group" aria-label="Button group">
-                                      <a href="{{ route('media.show', $p) }}" type="button" class="btn btn-primary btn-xs">view</a>
-                                      <a href="{{ route('delete-media', $p) }}" type="button" class="btn btn-danger btn-xs">delete</a>
-                                    </div>
-                                </div>
-                            </div>
+                      <div class="row no-gutters align-items-center">
+                        <div class="col-md-5">
+                          <img src="{{ $p->file }}" class="card-img pl-lg-3" alt="...">
                         </div>
+                        <div class="col-md-7">
+                          <div class="card-body">
+                            <h5 class="card-title font-size-16">{{ Str::limit($p->name, 50, '...') }}</h5>
+                            <p class="card-text text-muted">{{ Str::limit($p->description, 120, '...') }}</p>
+                            <p class="card-text"><small class="text-muted">Last updated
+                                {{ $p->updated_at->diffForHumans() }}</small></p>
+                            <div class="btn-group" role="group" aria-label="Button group">
+                              <a href="{{ route('media.show', $p) }}" type="button" class="btn btn-primary btn-xs">view</a>
+                              <a href="{{ route('delete-media', $p) }}" type="button" class="btn btn-danger btn-xs">delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    </div> 
+                  </div>
+                  @endif
                   @endforeach
+                  <!-- end col -->
+                  @if (!count(Auth::user()->photos))
+                  <div class="col-lg-12">
+                    <div class="card">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col-md-12">
+                          <div class="card-body">
+                            <h2 class="card-text text-title"><i data-feather="folder"></i></h2>
+                            <h5 class="card-title font-size-16">You currently do not have any photos</h5>
+                            <p class="card-text text-muted">
+                            Upload photos and you'll see them here.  
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  @endif
                     <!-- end col -->
+                  
+                @if (count(Auth::user()->photos) > 6)
+                <div class="row mb-3 mt-5">
+                  <div class="col-12">
+                    <div class="text-center">
+                      <a href="{{ route('media.index') }}" class="btn btn-lg btn-primary">
+                        <i data-feather="loader" class="icon-dual icon-xs mr-2 text-white"></i>
+                        Show More 
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                @endif
                 </div>
             </div>
 
 
-            <div class="tab-pane fade" id="classes" role="tabpanel" aria-labelledby="classes-tab">
+            <div class="tab-pane fade" id="folders" role="tabpanel" aria-labelledby="classes-tab">
 
-              <h5 class="mt-3">Classes</h5>
+              <h5 class="mt-3">Folders</h5>
 
               <div class="row mt-3">
-
-                @if (isset($user->classes))
-                  @foreach ($user->classes as $uclass)
+                @if (isset(Auth::user()->folders))
+                  @foreach (Auth::user()->folders as $folder)
                     <div class="col-xl-4 col-lg-6">
                       <div class="card border">
 
                         <div class="card-body">
-                          <div class="badge badge-success float-right">Completed</div>
-                          <p class="text-success text-uppercase font-size-12 mb-2">Web
-                            Design</p>
+                          <div class="badge badge-success float-right">{{ $folder->access }}</div>
+                          <p class="text-success text-uppercase font-size-12 mb-2">{{ count($folder->media) }}</p>
                           <h5><a href="#" class="text-dark">
-                            {{ isset($uclass->label) ? $uclass->label : '' }}
+                            {{ $folder->name ? $folder->name : '' }}
                           </a>
                           </h5>
                           <p class="text-muted mb-4">
-                            {{ isset($uclass->school) ? $uclass->school->name : ''}}
+                            {{ isset($folder->media) ? count($folder->media) : ''}}
                           </p>
                         </div>
                       </div>

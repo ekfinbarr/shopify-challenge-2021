@@ -32,7 +32,8 @@ class Media extends Model
       'access_id',
       'published',
       'media_type_id',
-      'media_format_id'
+      'media_format_id',
+      'folder_id'
     ];
 
     public function user()
@@ -88,5 +89,10 @@ class Media extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'media_tags', 'media_id', 'tag_id');
+    }
+
+    public function folder()
+    {
+        return $this->belongsTo(Folder::class, 'folder_id');
     }
 }
