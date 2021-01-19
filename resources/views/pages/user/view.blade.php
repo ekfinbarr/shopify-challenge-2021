@@ -175,13 +175,13 @@ View User Profile
 
                         <div class="card-body">
                           <div class="badge badge-success float-right">{{ $folder->access }}</div>
-                          <p class="text-success text-uppercase font-size-12 mb-2">{{ count($folder->media) }}</p>
+                          <p class="text-success text-uppercase font-size-12 mb-2">{{ $folder->updated_at ? 'updated '. $folder->updated_at->diffForHumans() : '' }}</p>
                           <h5><a href="#" class="text-dark">
                             {{ $folder->name ? $folder->name : '' }}
                           </a>
                           </h5>
                           <p class="text-muted mb-4">
-                            {{ isset($folder->media) ? count($folder->media) : ''}}
+                            {{ isset($folder->media) ? count($folder->media) . ' folders' : ''}}
                           </p>
                         </div>
                       </div>
