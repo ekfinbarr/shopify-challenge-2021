@@ -21,7 +21,11 @@ class Tag extends Model
       'label'
     ];
 
-    public function medias()
+    public function media()
+    {
+        return $this->belongsToMany(Media::class, 'media_tags', 'tag_id', 'media_id');
+    }
+    public function photos()
     {
         return $this->belongsToMany(Media::class, 'media_tags', 'tag_id', 'media_id');
     }

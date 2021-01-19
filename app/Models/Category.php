@@ -26,4 +26,9 @@ class Category extends Model
     {
         return $this->hasMany(Media::class, 'category_id');
     }
+
+    public function media()
+    {
+        return $this->hasMany(Media::class, 'category_id');
+    }
 }

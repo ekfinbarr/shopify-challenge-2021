@@ -158,7 +158,19 @@ class MediaController extends Controller
 
     if (isset($photo)) {
       $related_photos = Media::public()->published()->where([['id', '!=', $photo->id],['category_id', $photo->category_id]])->limit(8)->get();
+      
+      if (Auth::check() && Auth::user()->hasMedia($photo->id)) {
+        // ignore
+      }else{
+        $photo->views = intval($photo->views, 10) + 1;
+        $photo->save();
+      }
 
+      if (Auth::check() && Auth::user()->hasMedia($photo->id)) {
+        return view('pages.media.view')
+        ->with('related_photos', $related_photos)
+        ->with('media', $photo);
+      }
       return view('landing.media.view')
         ->with('related_photos', $related_photos)
         ->with('media', $photo);
