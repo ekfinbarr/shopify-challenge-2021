@@ -111,7 +111,7 @@ class MediaController extends Controller
         $input['published'] = $request->published == 'true' || true ? 1 : 0;
         $input['dimension'] = $width . ',' . $height;
         $input['slug'] = $input['file'];
-        $input['name'] = !isset($input['name']) || $input['name'] == '' ? date('Y') . "_" . $request->image->getClientOriginalName() : '';
+        $input['name'] = !isset($input['name']) || $input['name'] == '' ? date('Y') . "_" . $request->image->getClientOriginalName() : $input['name'];
         $input['user_id'] = Auth::user()->id;
         $photo = Media::create($input);
 
